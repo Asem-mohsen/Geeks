@@ -205,53 +205,188 @@
                     <a href="{{ route('selfCommented') }}">solution</a>
                 </td>
             </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    16
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Find total posts and comments for each user
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('totalPostsandComments') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    17
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Find posts with the most comments and at least three tags
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('mostCommentsand3tags') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    18
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Get the user with the most published posts
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('mostPublishedPosts') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    19
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Find posts with comments from at least two different users
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('postsWithcomments2differentUsers') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    20
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Find users who have never posted but have commented
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('usersNeverPosted') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    21
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Retrieve tags on posts created by multiple users
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('tagsMultiUsers') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    22
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Get the user with the most tags across their posts
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('userWithMostTags') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    23
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Count posts by status (draft, published) for each user
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('countPostsByStatus') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    24
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Find posts tagged with all tags starting with 'L'. Return
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('Ltags') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    25
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Identify top 3 users with the highest average post length
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('usersHighestAvgPosts') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    26
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Get users who authored posts each month of the current year
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('usersPostsEachMonth') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    27
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Retrieve posts tagged with at least one tag used by the most active user
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('postsLeastTagActiveUser') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    28
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Find users who both authored and commented on posts with a specific tag
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('authoredAndCommented', 'funny') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    29
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Count comments made by users on posts authored by others
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('countCommentsOthers') }}">solution</a>
+                </td>
+            </tr>
+
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">
+                    30
+                </td>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Find all users who have commented on posts authored by other users
+                </th>
+                <td class="px-6 py-4">
+                    <a href="{{ route('allUsersCommentedOthers') }}">solution</a>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
-
-
-
-    <!-- Post -->
-    {{-- @for (post of posts; track $index) {
-      <div class="bg-white rounded-lg p-5 flex flex-col gap-3">
-
-        <!-- header -->
-        <div class="flex gap-3 items-center">
-            <img class="w-11 rounded-full" [src]="post.user.photo" [alt]="post.user.name">
-            <div class="font-medium">
-              <h3>{{post.user.name}}</h3>
-              <span class="text-gray-500">{{post.createdAt | date}}</span>
-            </div>
-        </div>
-
-        <!-- content -->
-        <p>{{post.body}}</p>
-        <img [src]="post.image" class="rounded-lg" alt="">
-
-        <!-- Comments -->
-        <p class="text-slate-400 cursor-pointer" #showComments>Show Comments</p>
-        @defer (on interaction(showComments)) {
-          <app-post-comments [postId]="post.id" ></app-post-comments>
-        }
-
-        <!-- type comment -->
-        <app-create-comment [postId]="post.id"></app-create-comment>
-                   {{-- Comments --}}
-                   {{-- <div class="flex flex-col gap-3">
-                        
-                    <div class="bg-slate-200 p-5 rounded-lg">
-                    <div class="flex gap-1 items-center">
-                        <img class="w-8 rounded-full" src="{{asset('imgs/avatar.svg')}}">
-                        <h5>{{'author name'}}</h5>
-                        <span class="text-gray-500 font-light">{{ $comment->created_at}}</span>
-                    </div>
-                    <p>{{$comment->content}}</p>
-                    </div>
-                
-                </div>
-
-    </div> --}}
-
-  {{-- </div> --}}
 
 @endsection

@@ -16,12 +16,25 @@ Route::controller(PostController::class)->group(function(){
     Route::get('/posts-atLeast-2Tags', 'getPostAtLeast2tags')->name('posts-atLeast-2Tags');
     Route::get('/getPostsByTags', 'getPostsByTags')->name('getPostsByTags');
     Route::get('/lastMonthPosts', 'lastMonthPosts')->name('lastMonthPosts');
+    Route::get('/mostCommentsand3tags', 'mostCommentsand3tags')->name('mostCommentsand3tags');
 });
-    
+
 Route::controller(UserContoller::class)->group(function(){
     Route::get('/users','index')->name('users');
     Route::get('/usersWithTag/{tag}','UsersByTag')->name('usersWithTag');
     Route::get('/topTagsByMostActiveUser','usedbyMostActive')->name('topTagsByMostActiveUser');
+    Route::get('/totalPostsandComments','totalPostsandComments')->name('totalPostsandComments');
+    Route::get('/postsWithcomments2differentUsers','postsWithcomments2differentUsers')->name('postsWithcomments2differentUsers');
+    Route::get('/usersNeverPosted','usersNeverPosted')->name('usersNeverPosted');
+    Route::get('/tagsMultiUsers','tagsMultiUsers')->name('tagsMultiUsers');
+    Route::get('/userWithMostTags','userWithMostTags')->name('userWithMostTags');
+    Route::get('/countPostsByStatus','countPostsByStatus')->name('countPostsByStatus');
+    Route::get('/usersHighestAvgPosts','usersHighestAvgPosts')->name('usersHighestAvgPosts');
+    Route::get('/usersPostsEachMonth','usersPostsEachMonth')->name('usersPostsEachMonth');
+    Route::get('/postsLeastTagActiveUser','postsLeastTagActiveUser')->name('postsLeastTagActiveUser');
+    Route::get('/authoredAndCommented/{tagName}','authoredAndCommented')->name('authoredAndCommented');
+    Route::get('/mostPublishedPosts', 'mostPublishedPosts')->name('mostPublishedPosts');
+    Route::get('/allUsersCommentedOthers','allUsersCommentedOthers')->name('allUsersCommentedOthers');
 });
 
 Route::controller(CommentsController::class)->group(function(){
@@ -31,6 +44,7 @@ Route::controller(CommentsController::class)->group(function(){
     Route::get('/avgCommentsUser','avgCommentsUser')->name('avgCommentsUser');
     Route::get('/tagsUniqueUsers','tagsUniqueUsers')->name('tagsUniqueUsers');
     Route::get('/selfCommented','selfCommented')->name('selfCommented');
+    Route::get('/countCommentsOthers','countCommentsOthers')->name('countCommentsOthers');
 });
 
 
@@ -39,4 +53,5 @@ Route::controller(TagsController::class)->group(function(){
     Route::get('/tags-used-10Times','tagsUsedMore10')->name('tags-used-10Times');
     Route::get('/MostFrequentTag','MostFrequentTag')->name('MostFrequentTag');
     Route::get('/notUsedTags','getNotUsedTags')->name('notUsedTags');
+    Route::get('/Ltags','Ltags')->name('Ltags');
 });

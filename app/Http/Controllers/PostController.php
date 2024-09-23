@@ -37,7 +37,7 @@ class PostController extends Controller
     public function getNumberOfPostsTags()
     {
         // Solution 1: Using Eloquent Relationships and Methods:
-        $tags = Tag::all();
+        $tags = Tag::with('posts')->get(); // best practice to add withCount()
         $tagsERM = [];
 
         foreach ($tags as $tag) {
@@ -59,12 +59,11 @@ class PostController extends Controller
     }
 
     // Find posts with at least two specific tags
-    public function getPostAtLeast2tags()
+    public function getPostAtLeast2tags( $firstTag  = 'funny' , $secondTag = 'entertainment')
     {
-        $firstTag  = 'funny';
-        $secondTag = 'entertainment';
 
         // Solution 1: Using Eloquent Relationships and Methods:
+        // to add orWhere replaced with one of whereHas
         $postsERM = Post::whereHas('tags', function($query) use ($firstTag) {
                         $query->where('tag', $firstTag);
                     })->whereHas('tags', function($query) use ($secondTag) {
@@ -92,7 +91,7 @@ class PostController extends Controller
     public function getPostsByTags(Request $request)
     {
         $tagNames = $request->input('tags', []);
-    
+
         // Solution 1: Using Eloquent Relationships and Methods
         $postsERM = Post::whereHas('tags', function ($query) use ($tagNames) {
             $query->whereIn('tags.tag', $tagNames);
@@ -118,7 +117,7 @@ class PostController extends Controller
     {
         $startOfLastMonth = now()->subMonth()->startOfMonth();
         $endOfLastMonth = now()->subMonth()->endOfMonth();
-    
+
         // Solution 1: Using Eloquent Relationships and Methods
         $postslastMonthERM = Post::whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])
                                     ->has('tags', '>', 1)
@@ -143,5 +142,25 @@ class PostController extends Controller
                 ->pluck('tag');
         }
         return view('posts.lastMonthPosts', compact('postslastMonthERM', 'postslastMonthQB'));
+    }
+
+    // Find posts with the most comments and at least three tags
+    public function mostCommentsand3tags()
+    {
+        // Solution 1: Using Eloquent Relationships and Methods
+        $postsERM = Post::withCount('comments')->with('tags')->has('tags', '>=', 3)->orderByDesc('comments_count')->get();
+
+        // Solution 2: Using select and join Without Relationships
+        $postsQB = DB::table('posts')
+                    ->join('posttags', 'posts.id', '=', 'posttags.post_id')
+                    ->join('tags', 'posttags.tag_id', '=', 'tags.id')
+                    ->leftJoin('comments', 'posts.id', '=', 'comments.post_id')
+                    ->select('posts.id', 'posts.body', 'posts.created_at', DB::raw('COUNT(DISTINCT comments.id) as total_comments'), DB::raw('COUNT(DISTINCT posttags.tag_id) as total_tags'))
+                    ->groupBy('posts.id', 'posts.body', 'posts.created_at')
+                    ->having('total_tags', '>=', 3)
+                    ->orderByDesc('total_comments')
+                    ->get();
+
+        return view('posts.mostCommentsand3tags', compact('postsERM', 'postsQB'));
     }
 }

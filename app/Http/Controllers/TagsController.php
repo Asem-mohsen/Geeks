@@ -62,5 +62,25 @@ class TagsController extends Controller
 
         return view('tags.notUsedTags', compact('unassociatedTagERM' , 'unassociatedTagQB'));
     }
+
+    // Find posts tagged with all tags starting with 'L'. Return
+    public function Ltags()
+    {
+        // Solution 1: Using Eloquent Relationships and Methods:
+        $postsERM = Post::whereHas('tags', function ($query) {
+                        $query->where('tag', 'like', 'L%');
+                    })->distinct()->get();
+
+        // Solution 2: Using select and join Without Relationships
+       $postsQB = DB::table('posts')
+                ->join('posttags', 'posts.id', '=', 'posttags.post_id')
+                ->join('tags', 'posttags.tag_id', '=', 'tags.id')
+                ->where('tag', 'like', 'L%')
+                ->select('posts.*')
+                ->distinct()
+                ->get();
+
+        return view('tags.Ltags', compact('postsERM' , 'postsQB'));
+    }
 }
 

@@ -1,17 +1,18 @@
 @extends('layout.master')
-@section('Title' , 'Posts')
+
+@section('Title' , 'Users')
 
 @section('Content')
 
-<h1 class="text-center m-5">Find posts from the last month with multiple tags</h1>
+<h1 class="text-center m-5">Find posts with comments from at least two different users</h1>
 
 <div class="flex gap-3">
     <div>
-        @if($postslastMonthERM->isEmpty())
-            <p>No posts found within the las month.</p>
+        @if($postsERM->isEmpty())
+            <p>No posts found</p>
         @else
             <h1 class="text-center m-5">Using Eloquent Relationships and Methods</h1>
-            @foreach($postslastMonthERM as $post)
+            @foreach($postsERM as $post)
                 <div class="bg-white rounded-lg p-5 flex flex-col gap-3">
 
                     <!-- header -->
@@ -25,15 +26,6 @@
 
                     <!-- content -->
                     <p>{{$post->body}}</p>
-
-                    {{-- tag --}}
-                    <div class="flex flex-wrap">
-                        @foreach ($post->tags as $tag)
-                            <span class="bg-blue-100 w-fit text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                                {{ $tag->tag }}
-                            </span>
-                        @endforeach
-                    </div>
 
                 </div>
             @endforeach
@@ -41,11 +33,11 @@
     </div>
 
     <div>
-        @if($postslastMonthQB->isEmpty())
-            <p>No posts found within the las month.</p>
+        @if($postsQB->isEmpty())
+            <p>No posts found</p>
         @else
             <h1 class="text-center m-5">Using select and join Without Relationships</h1>
-            @foreach($postslastMonthQB as $post)
+            @foreach($postsQB as $post)
                 <div class="bg-white rounded-lg p-5 flex flex-col gap-3">
 
                     <!-- header -->
@@ -59,15 +51,6 @@
 
                     <!-- content -->
                     <p>{{$post->body}}</p>
-
-                    {{-- tag --}}
-                    <div class="flex flex-wrap">
-                        @foreach ($post->tags as $tag)
-                            <span class="bg-blue-100 w-fit text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                                {{ $tag }}
-                            </span>
-                        @endforeach
-                    </div>
 
                 </div>
             @endforeach

@@ -14,6 +14,7 @@ class PostFactory extends Factory
         return [
             'body' => $this->faker->paragraphs(3, true),
             'user_id' => User::inRandomOrder()->first()->id,
+            'status' => $this->faker->randomElement(['draft', 'published']),
             'created_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
         ];

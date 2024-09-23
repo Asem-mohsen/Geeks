@@ -29,7 +29,7 @@ class CommentsController extends Controller
                         ->orderByDesc('comment_count')
                         ->limit(5)
                         ->get();
-        
+
         $maxCount = max(count($topUsersERM), count($topUsersDQ));
 
         return view('comments.topUsersComments', compact('topUsersERM' , 'topUsersDQ' , 'maxCount'));
@@ -87,7 +87,7 @@ class CommentsController extends Controller
                                     $tag->unique_user_count = $uniqueUsers;
                                     return $tag;
                                 });
-    
+
         // Solution 2: Using select and join Without Relationships
         $tagsWithUniqueUsersQB = DB::table('tags')
                                 ->join('posttags', 'tags.id', '=', 'posttags.tag_id')
@@ -96,7 +96,7 @@ class CommentsController extends Controller
                                 ->groupBy('tags.id', 'tags.tag')
                                 ->orderByDesc('unique_user_count')
                                 ->get();
-                            
+
 
         return view('comments.tagsUniqueUsers', compact('tagsWithUniqueUsersERM', 'tagsWithUniqueUsersQB'));
     }
@@ -112,7 +112,7 @@ class CommentsController extends Controller
                             })
                             ->with('comments')
                             ->get();
-    
+
         // Solution 2: Using select and join Without Relationships
         $selfCommentedQB = DB::table('users')
                             ->join('comments', 'users.id', '=', 'comments.user_id')
@@ -125,4 +125,26 @@ class CommentsController extends Controller
         return view('comments.selfCommented', compact('selfCommentedERM', 'selfCommentedQB'));
     }
 
+    // Count comments made by users on posts authored by others
+    public function countCommentsOthers()
+    {
+
+        // Solution 1: Using Eloquent Relationships and Methods:
+        $commentsERM = User::withCount(['comments as comments_count' => function ($query) {
+                            $query->whereHas('post', function ($postQuery) {
+                                $postQuery->where('user_id', '!=', \DB::raw('comments.user_id'));
+                            });
+                        }])->get();
+
+        // Solution 2: Using select and join Without Relationships
+        $commentsQB = DB::table('users')
+                        ->leftJoin('comments', 'users.id', '=', 'comments.user_id')
+                        ->leftJoin('posts', 'comments.post_id', '=', 'posts.id')
+                        ->select('users.id', 'users.name', DB::raw('COUNT(comments.id) as comments_count'))
+                        ->where('posts.user_id', '!=', \DB::raw('users.id'))
+                        ->groupBy('users.id', 'users.name')
+                        ->get();
+
+        return view('comments.countCommentsOthers', compact('commentsERM' , 'commentsQB'));
+    }
 }
