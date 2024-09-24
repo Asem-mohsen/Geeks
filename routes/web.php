@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserContoller;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\TagsController;
+use App\Http\Controllers\ArrayManipulation;
 
 Route::get('/', [HomeController::class , 'index'])->name('home');
 
@@ -54,4 +55,23 @@ Route::controller(TagsController::class)->group(function(){
     Route::get('/MostFrequentTag','MostFrequentTag')->name('MostFrequentTag');
     Route::get('/notUsedTags','getNotUsedTags')->name('notUsedTags');
     Route::get('/Ltags','Ltags')->name('Ltags');
+});
+
+Route::controller(ArrayManipulation::class)->group(function(){
+    Route::get('/array-index','index')->name('array.index');
+    Route::get('/renameKeyMethod','renameKeyMethod')->name('renaming');
+    Route::get('/swap','swapMethod')->name('swap');
+    Route::get('/removeKey','removeMethod')->name('removeKey');
+    Route::get('/changeKeyCase','changeKeyCaseMethod')->name('changeKeyCase');
+    Route::get('/sortByKeys','sortByKeys')->name('sortByKeys');
+    Route::get('/mergeAssociative','mergeAssociative')->name('mergeAssociative');
+    Route::get('/missingKeys','missingKeys')->name('missingKeys');
+    Route::get('/reorder','reorder')->name('reorder');
+    Route::get('/replacekeysNew','replacekeysNew')->name('replacekeysNew');
+    Route::get('/groupValues','groupValues')->name('groupValues');
+    Route::get('/extractSubset','extractSubset')->name('extractSubset');
+    Route::get('/addPrefixSuffixToKeys','addPrefixSuffixToKeys')->name('addPrefixSuffixToKeys');
+    Route::get('/createAssociativeArray','createAssociativeArray')->name('createAssociativeArray');
+    Route::get('/renameKeysWithMapping','renameKeysWithMapping')->name('renameKeysWithMapping');
+    Route::get('/findDuplicateKeys','findDuplicateKeys')->name('findDuplicateKeys');
 });

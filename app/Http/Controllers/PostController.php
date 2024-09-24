@@ -37,16 +37,7 @@ class PostController extends Controller
     public function getNumberOfPostsTags()
     {
         // Solution 1: Using Eloquent Relationships and Methods:
-        $tags = Tag::with('posts')->get(); // best practice to add withCount()
-        $tagsERM = [];
-
-        foreach ($tags as $tag) {
-
-            $postCount = $tag->posts->count();
-
-            $tagsERM[] = ['post_count' => $postCount];
-
-        }
+        $tagsERM = Tag::withCount('posts')->get();
 
         // Solution 2: Using select and join Without Relationships:
         $tagsQueryBuilder = DB::table('tags')
@@ -55,36 +46,33 @@ class PostController extends Controller
                             ->groupBy('tags.id', 'tags.tag')
                             ->get();
 
-        return view('posts.tagsWithPostNumber', ['tagsEloquent' => $tagsERM,'tagsQueryBuilder' => $tagsQueryBuilder , 'tags' =>$tags ]);
+        return view('posts.tagsWithPostNumber', ['tagsEloquent' => $tagsERM,'tagsQueryBuilder' => $tagsQueryBuilder ]);
     }
 
     // Find posts with at least two specific tags
-    public function getPostAtLeast2tags( $firstTag  = 'funny' , $secondTag = 'entertainment')
+    public function getPostAtLeast2tags($firstTag = 'funny', $secondTag = 'entertainment')
     {
-
-        // Solution 1: Using Eloquent Relationships and Methods:
-        // to add orWhere replaced with one of whereHas
-        $postsERM = Post::whereHas('tags', function($query) use ($firstTag) {
-                        $query->where('tag', $firstTag);
-                    })->whereHas('tags', function($query) use ($secondTag) {
-                        $query->where('tag', $secondTag);
-                    })->get();
-
-        // Solution 2: Using select and join Without Relationships:
-        $postsQB = DB::table('posts')
-                    ->join('posttags', 'posts.id', '=', 'posttags.post_id')
-                    ->join('tags', 'posttags.tag_id', '=', 'tags.id')
-                    ->where(function ($query) use ($firstTag, $secondTag) {
-                        $query->where('tags.tag', $firstTag)
-                            ->orWhere('tags.tag', $secondTag);
+        // Solution 1: Using Eloquent Relationships and Methods
+        $postsERM = Post::whereHas('tags', function($query) use ($firstTag, $secondTag) {
+                        $query->whereIn('tag', [$firstTag, $secondTag]);
                     })
-                    ->groupBy('posts.id', 'posts.body', 'posts.created_at', 'posts.updated_at', 'posts.user_id')
-                    ->havingRaw('COUNT(DISTINCT tags.tag) = 2')
-                    ->select('posts.*')
+                    ->withCount(['tags as tag_count' => function($query) use ($firstTag, $secondTag) {
+                        $query->whereIn('tag', [$firstTag, $secondTag]);
+                    }])
+                    ->having('tag_count', '>=', 2)
                     ->get();
 
-        return view('posts.atLeastTwoTags', [ 'postsERM' => $postsERM ,'postsQB' => $postsQB]);
+        // Solution 2: Using select and join Without Relationships
+        $postsQB = DB::table('posts')
+            ->join('posttags', 'posts.id', '=', 'posttags.post_id')
+            ->join('tags', 'posttags.tag_id', '=', 'tags.id')
+            ->whereIn('tags.tag', [$firstTag, $secondTag])
+            ->groupBy('posts.id', 'posts.body', 'posts.created_at', 'posts.updated_at', 'posts.user_id', 'posts.status')
+            ->havingRaw('COUNT(DISTINCT tags.tag) = 2')
+            ->select('posts.*')
+            ->get();
 
+        return view('posts.atLeastTwoTags', ['postsERM' => $postsERM, 'postsQB' => $postsQB]);
     }
 
     // Retrieve posts that have all specified tags

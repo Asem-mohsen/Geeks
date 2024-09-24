@@ -5,9 +5,6 @@
 @section('Content')
 
 
-{{-- <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mx-auto mt-5"> --}}
-
-
 <h1 class="text-center m-5">Questions</h1>
 
 <div class="relative overflow-x-auto m-5">

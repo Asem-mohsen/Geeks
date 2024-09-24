@@ -103,11 +103,14 @@ class UserContoller extends Controller
     public function mostPublishedPosts()
     {
         // Solution 1: Using Eloquent Relationships and Methods:
-        $userERM = User::withCount(['posts'])->orderByDesc('posts_count')->first();
+        $userERM = User::withCount(['posts' => function ($query){
+                        $query->where('status' , 'published');
+                    }])->orderByDesc('posts_count')->first();
 
         // Solution 2: Using select and join Without Relationships
         $userQB = DB::table('users')->join('posts', 'users.id', '=', 'posts.user_id')
                     ->select('users.id' ,'users.name' ,DB::raw('COUNT(DISTINCT posts.id) as total_posts') )
+                    ->where('status' , 'published')
                     ->groupBy('users.id','users.name')
                     ->orderByDesc('total_posts')
                     ->first();
@@ -176,18 +179,25 @@ class UserContoller extends Controller
         return view('users.tagsMultiUsers', compact('tagsERM' , 'tagsQB'));
     }
 
-    // Get the user with the most tags across their posts **review
+    // Get the user with the most tags across their posts =>to be reviewd
     public function userWithMostTags()
     {
         // Solution 1: Using Eloquent Relationships and Methods:
-        $userERM = User::withCount(['posts' => function ($query) {
-            $query->join('posttags', 'posts.id', '=', 'posttags.post_id')
-                  ->join('tags', 'posttags.tag_id', '=', 'tags.id')
-                  ->select(DB::raw('COUNT(DISTINCT tags.id) as distinct_tags_count'));
-        }])
-        ->orderByDesc('posts_count')
-        ->first();
-
+        // $userERM = User::withCount(['posts' => function ($query) {
+        //                 $query->withCount(['tags' => function($tagQuery){
+        //                     $tagQuery->select(DB::raw('COUNT(DISTINCT tags.id) as distinct_tags_count'));
+        //                 }]);
+        //             }])
+        //             ->orderByDesc('posts_count')
+        //             ->first();
+                    $userERM = User::withCount([
+                        'posts as unique_tags_count' => function ($query) {
+                            $query->join('posttags', 'posts.id', '=', 'posttags.post_id')
+                                  ->select(DB::raw('COUNT(DISTINCT posttags.tag_id)'));
+                        }
+                    ])
+                    ->orderByDesc('unique_tags_count')
+                    ->first();
         // Solution 2: Using select and join Without Relationships
         $userQB = DB::table('users')
                     ->join('posts', 'users.id', '=', 'posts.user_id')
@@ -211,7 +221,7 @@ class UserContoller extends Controller
                                     ])->get();
 
         // Solution 2: Using select and join Without Relationships
-        $userQB = DB::table('users')->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+        $userQB = DB::table('users')->join('posts', 'users.id', '=', 'posts.user_id')
                     ->select(
                         'users.id',
                         'users.name',
@@ -274,7 +284,7 @@ class UserContoller extends Controller
         return view('users.usersPostsEachMonth', compact('usersERM' , 'usersQB'));
     }
 
-    // Retrieve posts tagged with at least one tag used by the most active user **readAgain
+    // Retrieve posts tagged with at least one tag used by the most active user
     public function postsLeastTagActiveUser()
     {
         // Solution 1: Using Eloquent Relationships and Methods:
@@ -325,26 +335,26 @@ class UserContoller extends Controller
         return view('users.postsLeastTagActiveUser', compact('postsERM' , 'postsQB'));
     }
 
-    // Retrieve posts tagged with at least one tag used by the most active user **readAgain
+    // Retrieve posts tagged with at least one tag used by the most active user
     public function authoredAndCommented($tagName)
     {
         $tag = Tag::where('tag', $tagName)->first();
 
         // Solution 1: Using Eloquent Relationships and Methods
         $usersERM = User::whereHas('posts.tags', function ($query) use ($tag) {
-            $query->where('tags.id', $tag->id);
-        })
-        ->whereIn('id', function ($query) use ($tag) {
-            $query->select('comments.user_id')
-                ->from('comments')
-                ->whereIn('post_id', function ($subQuery) use ($tag) {
-                    $subQuery->select('posts.id')
-                        ->from('posts')
-                        ->join('posttags', 'posts.id', '=', 'posttags.post_id')
-                        ->where('posttags.tag_id', $tag->id);
-                });
-        })
-        ->get();
+
+                        $query->where('tags.id', $tag->id);
+
+                    })->whereIn('id', function ($query) use ($tag) {
+                        $query->select('comments.user_id')->from('comments')
+                            ->whereIn('post_id', function ($subQuery) use ($tag) {
+                                $subQuery->select('posts.id')
+                                    ->from('posts')
+                                    ->join('posttags', 'posts.id', '=', 'posttags.post_id')
+                                    ->where('posttags.tag_id', $tag->id);
+                            });
+                    })->get();
+
 
         // Solution 2: Using select and join Without Relationships
         $usersQB = DB::table('users')
