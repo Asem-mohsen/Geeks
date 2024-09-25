@@ -11,6 +11,8 @@ class Post extends Model
 
     protected $table = 'posts' ;
 
+    protected $fillable = ['body', 'user_id'];
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'posttags', 'post_id', 'tag_id');

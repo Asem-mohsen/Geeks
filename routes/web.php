@@ -8,7 +8,9 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\ArrayManipulation;
 
-Route::get('/', [HomeController::class , 'index'])->name('home');
+
+
+Route::get('/export', [HomeController::class , 'export'])->name('export-excel');
 
 Route::controller(PostController::class)->group(function(){
     Route::get('/posts', 'index')->name('posts');
@@ -75,3 +77,7 @@ Route::controller(ArrayManipulation::class)->group(function(){
     Route::get('/renameKeysWithMapping','renameKeysWithMapping')->name('renameKeysWithMapping');
     Route::get('/findDuplicateKeys','findDuplicateKeys')->name('findDuplicateKeys');
 });
+
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
