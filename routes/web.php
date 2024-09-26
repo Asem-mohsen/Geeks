@@ -7,9 +7,10 @@ use App\Http\Controllers\UserContoller;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\ArrayManipulation;
+use App\Http\Controllers\MinesController;
 
 
-
+Route::get('/mines', [MinesController::class , 'index'])->name('mines');
 Route::get('/export', [HomeController::class , 'export'])->name('export-excel');
 
 Route::controller(PostController::class)->group(function(){
